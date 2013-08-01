@@ -4,19 +4,18 @@ require 'command_backward'
 class CommandParser
   def parse(input)
     tokens = input.split(" ")
-    result = []
-    parse_rec(tokens, result)
+    result = parse_rec(tokens, [])
     result.flatten
   end
 
 private
-  def parse_rec(tokens, result)
-    unless tokens.nil? || tokens.count <= 0
-      this_result, remaining_args = self.send(tokens[0], tokens[1..-1])
-      result << this_result
-
-      parse_rec(remaining_args, result)
+  def parse_rec(tokens, current_result)
+    if tokens.nil? || tokens.count <= 0
+      return current_result
     end
+
+    this_result, remaining_args = self.send(tokens[0], tokens[1..-1])
+    parse_rec(remaining_args, current_result + [ this_result ])
   end
 
   def FD(args)
