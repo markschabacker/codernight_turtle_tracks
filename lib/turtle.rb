@@ -14,13 +14,22 @@ class Turtle
   end
 
   def forward
-    offset_x, offset_y = offset(orientation)
-    @visited_points << create_point(point.x + offset_x, point.y + offset_y)
+    move_one_unit_at_orientation(orientation)
+  end
+
+  def backward
+    move_one_unit_at_orientation((orientation - 180) % 360)
   end
 
 private
   def create_point(x, y)
     OpenStruct.new(:x => x, :y => y)
+  end
+
+  def move_one_unit_at_orientation(orientation)
+    offset_x, offset_y = offset(orientation)
+    @point = create_point(point.x + offset_x, point.y + offset_y)
+    @visited_points << point
   end
 
   def radians(degrees)

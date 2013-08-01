@@ -57,6 +57,33 @@ describe "The Turtle" do
           turtle.visited_points.count.should == 2
           turtle.visited_points.last.x.should == expectation[:x]
           turtle.visited_points.last.y.should == expectation[:y]
+
+          turtle.point.x.should == expectation[:x]
+          turtle.point.y.should == expectation[:y]
+        end
+      end
+    end
+
+    describe "backward" do
+      [ {:orientation => 0, :x => 0, :y => -1},
+        {:orientation => 45, :x => -1, :y => -1},
+        {:orientation => 90, :x => -1, :y => 0},
+        {:orientation => 135, :x => -1, :y => 1},
+        {:orientation => 180, :x => 0, :y => 1},
+        {:orientation => 225, :x => 1, :y => 1},
+        {:orientation => 270, :x => 1, :y => 0},
+        {:orientation => 315, :x => 1, :y => -1} ]
+      .each do |expectation|
+        it "moves x: #{expectation[:x]} and y: #{expectation[:y]} in orientation: #{expectation[:orientation]}" do
+          turtle.rotate(expectation[:orientation])
+          turtle.backward
+
+          turtle.visited_points.count.should == 2
+          turtle.visited_points.last.x.should == expectation[:x]
+          turtle.visited_points.last.y.should == expectation[:y]
+
+          turtle.point.x.should == expectation[:x]
+          turtle.point.y.should == expectation[:y]
         end
       end
     end
