@@ -8,27 +8,16 @@ describe "The Command Parser" do
   describe "Parsing commands" do
     let (:parser) { CommandParser.new }
 
-    it "can parse a single forward command" do
-      units = 10
-      input = "FD #{units}"
+    [{ :command => "FD 10", :distance => 10, :class => CommandForward },
+     { :command => "BK 11", :distance => 11, :class => CommandBackward }]
+    .each do |expectation|
+      it "can parse a single #{expectation[:class]}" do
+        command_list = parser.parse(expectation[:command])
 
-      command_list = parser.parse(input)
-
-      command_list.count.should == 1
-      command_list[0].should be_a(CommandForward)
-      command_list[0].distance.should == units
+        command_list.count.should == 1
+        command_list[0].should be_a(expectation[:class])
+        command_list[0].distance.should == expectation[:distance]
+      end
     end
-
-    it "can parse a single backward command" do
-      units = 10
-      input = "BK #{units}"
-
-      command_list = parser.parse(input)
-
-      command_list.count.should == 1
-      command_list[0].should be_a(CommandBackward)
-      command_list[0].distance.should == units
-    end
-
   end
 end
