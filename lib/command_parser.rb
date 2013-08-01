@@ -29,13 +29,23 @@ private
     # TODO: this won't work w/ recursive REPEATs
     bracket_start = 2
     bracket_end = args.index("]")
+    inner_bracket_count = args[bracket_start...bracket_end].count("[")
+
+    if(inner_bracket_count > 0)
+      inner_bracket_count.times do
+        closing_bracket_search_target = args[(bracket_end)...-1]
+        bracket_end += 1 + closing_bracket_search_target.index("]")
+      end
+    end
 
     repeated_command = args[bracket_start...bracket_end].join(" ")
+    # p repeated_command if inner_bracket_count >= 1
     commands = args[0].to_i.times.map do
       parse(repeated_command)
     end
 
     remaining_args = args[(bracket_end + 1)..-1]
+    # p remaining_args
     [commands, remaining_args]
   end
 end

@@ -95,5 +95,26 @@ describe "The Command Parser" do
       command_list[7].should be_a(CommandBackward)
       command_list[7].distance.should == 6
     end
+
+    it "can parse a recursive REPEAT statement" do
+      first_multiplier = 2
+      second_multiplier = 3
+      repeated_distance = 10
+      non_repeated_distance = 42
+      input = "REPEAT #{first_multiplier} [ REPEAT #{second_multiplier} [ REPEAT 1 [ FD #{repeated_distance} ] ]  ]\n"\
+              "BK #{non_repeated_distance}"
+
+      command_list = parser.parse(input)
+
+      command_list.count.should == (first_multiplier * second_multiplier) + 1
+
+      (first_multiplier * second_multiplier).times do |i|
+        command_list[i].should be_a(CommandForward)
+        command_list[i].distance.should == repeated_distance
+      end
+
+      command_list.last.should be_a(CommandBackward)
+      command_list.last.distance.should == non_repeated_distance
+    end
   end
 end
