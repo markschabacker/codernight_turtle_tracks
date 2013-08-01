@@ -33,5 +33,67 @@ describe "The Command Parser" do
       command_list[2].should be_a(CommandForward)
       command_list[2].distance.should == 42
     end
+
+    describe "Correctly repeats with the REPEAT command" do
+      it "for a single command" do
+        repeat_count = 5
+        distance = 12
+        input = "REPEAT #{repeat_count} [ FD #{distance} ]"
+
+        command_list = parser.parse(input)
+
+        command_list.count.should == repeat_count
+        (0...repeat_count).each do |i|
+          command_list[i].should be_a(CommandForward)
+          command_list[i].distance.should == distance
+        end
+      end
+
+      it "for multiple commands" do
+        repeat_count = 5
+        distance_forward = 12
+        distance_backward = 7
+        input = "REPEAT #{repeat_count} [ FD #{distance_forward} BK #{distance_backward} ]"
+
+        command_list = parser.parse(input)
+
+        command_list.count.should == repeat_count * 2
+        (0...repeat_count).each do |count|
+          i = count * 2
+          command_list[i].should be_a(CommandForward)
+          command_list[i].distance.should == distance_forward
+          command_list[i + 1].should be_a(CommandBackward)
+          command_list[i + 1].distance.should == distance_backward
+        end
+      end
+    end
+
+    it "can parse a complex command" do
+      input = "FD 0\n"\
+              "BK 1\n"\
+              "REPEAT 2 [ FD 3 BK 4 ]\n"\
+              "FD 5\n"\
+              "BK 6\n"
+
+      command_list = parser.parse(input)
+
+      command_list.count.should == 8
+      command_list[0].should be_a(CommandForward)
+      command_list[0].distance.should == 0
+      command_list[1].should be_a(CommandBackward)
+      command_list[1].distance.should == 1
+      command_list[2].should be_a(CommandForward)
+      command_list[2].distance.should == 3
+      command_list[3].should be_a(CommandBackward)
+      command_list[3].distance.should == 4
+      command_list[4].should be_a(CommandForward)
+      command_list[4].distance.should == 3
+      command_list[5].should be_a(CommandBackward)
+      command_list[5].distance.should == 4
+      command_list[6].should be_a(CommandForward)
+      command_list[6].distance.should == 5
+      command_list[7].should be_a(CommandBackward)
+      command_list[7].distance.should == 6
+    end
   end
 end
