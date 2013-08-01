@@ -3,8 +3,10 @@ require 'command_backward'
 
 class CommandParser
   def parse(input)
-    split_input = input.split(" ")
-    [self.send(split_input.shift, split_input)]
+    input.split("\n").inject([]) do |results, line|
+      line_command = line.split(" ")
+      results << self.send(line_command.shift, line_command)
+    end
   end
 
 private
