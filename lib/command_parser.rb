@@ -26,26 +26,34 @@ private
   end
 
   def REPEAT(args)
-    # TODO: this won't work w/ recursive REPEATs
-    bracket_start = 2
-    bracket_end = args.index("]")
-    inner_bracket_count = args[bracket_start...bracket_end].count("[")
-
-    if(inner_bracket_count > 0)
-      inner_bracket_count.times do
-        closing_bracket_search_target = args[(bracket_end)...-1]
-        bracket_end += 1 + closing_bracket_search_target.index("]")
-      end
-    end
-
-    repeated_command = args[bracket_start...bracket_end].join(" ")
-    # p repeated_command if inner_bracket_count >= 1
+    bracket_start, bracket_end = find_inner_bracket_bounds(args)
+    command_to_repeat = args[bracket_start...bracket_end].join(" ")
     commands = args[0].to_i.times.map do
-      parse(repeated_command)
+      parse(command_to_repeat)
     end
 
     remaining_args = args[(bracket_end + 1)..-1]
-    # p remaining_args
     [commands, remaining_args]
+  end
+
+  def find_inner_bracket_bounds(args)
+    bracket_start = bracket_end = -1
+    bracket_level = 0;
+
+    args.each_with_index do |arg, index|
+      if arg == "["
+        bracket_level += 1
+        bracket_start = index if bracket_start < 0
+      elsif arg == "]"
+        bracket_level -= 1
+      end
+
+      if bracket_level == 0 && bracket_start >= 0
+        bracket_end = index
+        break
+      end
+    end
+
+    [bracket_start + 1, bracket_end]
   end
 end

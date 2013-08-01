@@ -99,18 +99,23 @@ describe "The Command Parser" do
     it "can parse a recursive REPEAT statement" do
       first_multiplier = 2
       second_multiplier = 3
-      repeated_distance = 10
+      num_repeated_commands = 2
+      repeated_forward_distance = 10
+      repeated_backward_distance = 3
       non_repeated_distance = 42
-      input = "REPEAT #{first_multiplier} [ REPEAT #{second_multiplier} [ REPEAT 1 [ FD #{repeated_distance} ] ]  ]\n"\
+      input = "REPEAT #{first_multiplier} [ REPEAT #{second_multiplier} [ REPEAT 1 [ FD #{repeated_forward_distance} ] BK #{repeated_backward_distance} ]  ]\n"\
               "BK #{non_repeated_distance}"
 
       command_list = parser.parse(input)
 
-      command_list.count.should == (first_multiplier * second_multiplier) + 1
+      command_list.count.should == ((first_multiplier * second_multiplier) * num_repeated_commands) + 1
 
       (first_multiplier * second_multiplier).times do |i|
-        command_list[i].should be_a(CommandForward)
-        command_list[i].distance.should == repeated_distance
+        index = i * num_repeated_commands
+        command_list[index].should be_a(CommandForward)
+        command_list[index].distance.should == repeated_forward_distance
+        command_list[index + 1].should be_a(CommandBackward)
+        command_list[index + 1].distance.should == repeated_backward_distance
       end
 
       command_list.last.should be_a(CommandBackward)
