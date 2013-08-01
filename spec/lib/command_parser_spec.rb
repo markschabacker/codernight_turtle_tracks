@@ -11,12 +11,24 @@ describe "The Command Parser" do
     [{ :command => "FD 10", :distance => 10, :class => CommandForward },
      { :command => "BK 11", :distance => 11, :class => CommandBackward }]
     .each do |expectation|
-      it "can parse a single #{expectation[:class]}" do
+      it "can parse a single movement #{expectation[:class]}" do
         command_list = parser.parse(expectation[:command])
 
         command_list.count.should == 1
         command_list[0].should be_a(expectation[:class])
         command_list[0].distance.should == expectation[:distance]
+      end
+    end
+
+    [{ :command => "RT 45", :angle_change => 45, :class => CommandRight},
+     { :command => "LT 135", :angle_change => 135, :class => CommandLeft}]
+    .each do |expectation|
+      it "can parse a single rotation #{expectation[:class]}" do
+        command_list = parser.parse(expectation[:command])
+
+        command_list.count.should == 1
+        command_list[0].should be_a(expectation[:class])
+        command_list[0].angle_change.should == expectation[:angle_change]
       end
     end
 

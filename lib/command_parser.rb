@@ -1,5 +1,7 @@
 require 'command_forward'
 require 'command_backward'
+require 'command_left'
+require 'command_right'
 
 class CommandParser
   def parse(input)
@@ -21,8 +23,17 @@ private
   def FD(args)
     [CommandForward.new(args[0].to_i), args[1..-1]]
   end
+
   def BK(args)
     [CommandBackward.new(args[0].to_i), args[1..-1]]
+  end
+
+  def RT(args)
+    [CommandRight.new(args[0].to_i), args[1..-1]]
+  end
+
+  def LT(args)
+    [CommandLeft.new(args[0].to_i), args[1..-1]]
   end
 
   def REPEAT(args)
