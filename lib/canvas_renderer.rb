@@ -1,14 +1,9 @@
 class CanvasRenderer
   def render(canvas_size, points)
-    lines = []
-    (canvas_size - 1).downto(0) do |y|
-      line = []
-      canvas_size.times do |x|
-        char = points.any? { |point| point.x == x && point.y == y } ? "X" : "."
-        line << char
-      end
-      lines << line.join(" ")
-    end
-    lines.join("\n")
+    canvas_size.times.map do |y|
+      canvas_size.times.map do |x|
+        points.any? { |point| point.x == x && point.y == y } ? "X" : "."
+      end.join(" ")
+    end.reverse.join("\n")
   end
 end
