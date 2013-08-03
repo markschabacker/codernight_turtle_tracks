@@ -13,4 +13,12 @@ describe "The Left Command" do
   it "defaults to angle_change 0" do
     CommandLeft.new(nil).angle_change.should == 0
   end
+
+  it "rotates the turtle -angle_change degrees" do
+    angle_change = 42
+    turtle = double("turtle")
+    turtle.should_receive(:rotate).with(-1 * angle_change)
+
+    CommandLeft.new(angle_change).perform(turtle)
+  end
 end
