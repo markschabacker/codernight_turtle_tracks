@@ -88,4 +88,16 @@ describe "The Turtle" do
       end
     end
   end
+
+  describe "Responding to commands" do
+    it "executes each command in the command list on itself" do
+      commands = [double("command"), double("command"), double("command")]
+
+      commands.each do |command|
+        command.should_receive(:perform).with(turtle)
+      end
+
+      turtle.perform_commands(commands)
+    end
+  end
 end

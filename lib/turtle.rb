@@ -21,6 +21,12 @@ class Turtle
     move_one_unit_at_orientation((orientation - 180) % 360)
   end
 
+  def perform_commands(commands)
+    commands.each do |command|
+      command.perform(self)
+    end
+  end
+
 private
   def create_point(x, y)
     OpenStruct.new(:x => x, :y => y)
