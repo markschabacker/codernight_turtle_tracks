@@ -1,5 +1,7 @@
 #!/usr/bin/env ruby
 
+require 'optparse'
+
 require_relative 'lib/canvas_renderer'
 require_relative 'lib/command_parser'
 require_relative 'lib/turtle'
@@ -20,9 +22,16 @@ class LOGORunner
   end
 end
 
-def command_line_run
-  input_string = File.open(ARGV[0]).read
-  puts LOGORunner.new.evaluate(input_string)
-end
 
-command_line_run if __FILE__==$0
+if __FILE__==$0
+  optparse = OptionParser.new do |opts|
+    opts.banner = "Usage #{$0} source.logo"
+  end
+
+  if ARGV.empty?
+    puts optparse
+  else
+    input_string = File.open(ARGV[0]).read
+    puts LOGORunner.new.evaluate(input_string)
+  end
+end
