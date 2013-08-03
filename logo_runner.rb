@@ -1,3 +1,4 @@
+require_relative 'lib/canvas_renderer'
 require_relative 'lib/command_parser'
 require_relative 'lib/turtle'
 
@@ -13,6 +14,6 @@ class LOGORunner
     logo_commands = CommandParser.new.parse(logo_commands_text)
     turtle.perform_commands(logo_commands)
 
-    CanvasRenderer.render(canvas_size, turtle.visited_points)
+    CanvasRenderer.new.render(canvas_size, turtle.visited_points)
   end
 end

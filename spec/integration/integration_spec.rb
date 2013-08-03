@@ -21,7 +21,7 @@ describe "Turtle Tracks (Integration)" do
 ". . . . . . . . X . .\n" \
 ". . . . . . . X . . .\n" \
 ". . . . . . X . . . .\n" \
-". . . . . X . . . . .\n"
+". . . . . X . . . . ."
 
     LOGORunner.new.evaluate(input).should == expected_output
   end
