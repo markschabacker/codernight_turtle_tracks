@@ -1,9 +1,12 @@
 require_relative '../../lib/command_backward'
+require_relative 'command_shared_spec'
+
 describe "The Backward Command" do
   let (:distance) { :distance }
 
   subject { CommandBackward.new(distance) }
 
+  it_behaves_like "a command"
   it { should respond_to :distance }
 
   it "can be instantated with a distance" do
