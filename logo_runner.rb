@@ -1,3 +1,5 @@
+#!/usr/bin/env ruby
+
 require_relative 'lib/canvas_renderer'
 require_relative 'lib/command_parser'
 require_relative 'lib/turtle'
@@ -17,3 +19,10 @@ class LOGORunner
     CanvasRenderer.new.render(canvas_size, turtle.visited_points)
   end
 end
+
+def command_line_run
+  input_string = File.open(ARGV[0]).read
+  puts LOGORunner.new.evaluate(input_string)
+end
+
+command_line_run if __FILE__==$0
