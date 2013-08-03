@@ -13,4 +13,12 @@ describe "The Forward Command" do
   it "defaults to distance 0" do
     CommandForward.new(nil).distance.should == 0
   end
+
+  it "moves the turtle forward distance times" do
+    distance = 11
+    turtle = double("turtle")
+    turtle.should_receive(:forward).exactly(distance).times
+
+    CommandForward.new(distance).perform(turtle)
+  end
 end

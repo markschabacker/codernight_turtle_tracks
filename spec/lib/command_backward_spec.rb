@@ -13,4 +13,12 @@ describe "The Backward Command" do
   it "defaults to distance 0" do
     CommandBackward.new(nil).distance.should == 0
   end
+
+  it "moves the turtle backward distance times" do
+    distance = 11
+    turtle = double("turtle")
+    turtle.should_receive(:backward).exactly(distance).times
+
+    CommandBackward.new(distance).perform(turtle)
+  end
 end
