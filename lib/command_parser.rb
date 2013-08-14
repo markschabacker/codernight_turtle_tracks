@@ -1,7 +1,7 @@
-require_relative 'command_forward'
-require_relative 'command_backward'
-require_relative 'command_left'
-require_relative 'command_right'
+require 'command_forward'
+require 'command_backward'
+require 'command_left'
+require 'command_right'
 
 class CommandParser
   def parse(input)
