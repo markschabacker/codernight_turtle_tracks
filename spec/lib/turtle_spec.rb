@@ -3,6 +3,7 @@ require_relative "../../lib/turtle"
 describe "The Turtle" do
   let (:initial_point) { OpenStruct.new(:x => 0, :y => 0) }
   let (:turtle) { Turtle.new(initial_point) }
+
   describe "initialization" do
     it "takes a point" do
       Turtle.new(initial_point).point.should == initial_point
@@ -92,7 +93,6 @@ describe "The Turtle" do
   describe "Responding to commands" do
     it "executes each command in the command list on itself" do
       commands = [double("command"), double("command"), double("command")]
-
       commands.each do |command|
         command.should_receive(:perform).with(turtle)
       end
