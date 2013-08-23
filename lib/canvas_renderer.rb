@@ -7,11 +7,7 @@ class CanvasRenderer
 
 private
   def create_grid(canvas_size)
-    canvas_size.times.map do |y|
-      canvas_size.times.map do |x|
-        "."
-      end
-    end
+    canvas_size.times.map { [ "." ] * canvas_size }
   end
 
   def fill_points(canvas_grid, points)
